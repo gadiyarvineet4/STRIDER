@@ -1224,22 +1224,20 @@
       line-height: 1.8;
     }
 
-    /* Code teaser */
-    .lp-code {
+    /* Final CTA */
+    .lp-cta {
       background: var(--stone);
       padding: 120px 80px;
+      text-align: center;
+      border-bottom: 1px solid rgba(196, 135, 58, 0.15);
     }
 
-    .lp-code-header {
-      margin-bottom: 56px;
-    }
-
-    .lp-code-preview {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2px;
-      background: rgba(196, 135, 58, 0.12);
-      margin-bottom: 56px;
+    .lp-cta-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 44px;
+      font-weight: 500;
+      color: var(--parchment);
+      margin-bottom: 32px;
     }
 
     /* Footer */
@@ -1347,8 +1345,7 @@
         padding: 48px 28px;
       }
 
-      .code-grid,
-      .lp-code-preview {
+      .code-grid {
         grid-template-columns: 1fr;
       }
 
@@ -1387,7 +1384,7 @@
 
       .lp-problem,
       .lp-how,
-      .lp-code {
+      .lp-cta {
         padding: 80px 28px;
       }
 
@@ -1484,25 +1481,10 @@
       </div>
     </section>
 
-    <!-- Section 4 — Code Teaser -->
-    <section class="lp-code">
-      <div class="lp-code-header">
-        <div class="label">The Foundation</div>
-        <h2 class="heading-lg" style="color: var(--parchment);">The Code</h2>
-      </div>
-      <div class="lp-code-preview">
-        <div class="code-card">
-          <div class="code-numeral">I</div>
-          <div class="code-principle">You are not broken. You are between.</div>
-          <div class="code-desc">Where you are is a position, not a verdict.</div>
-        </div>
-        <div class="code-card">
-          <div class="code-numeral">II</div>
-          <div class="code-principle">Solitude is not failure. It is the forge.</div>
-          <div class="code-desc">The man comfortable alone connects from wholeness, not need.</div>
-        </div>
-      </div>
-      <button class="btn btn-amber" onclick="startFlow()">Begin</button>
+    <!-- Section 4 — Final CTA -->
+    <section class="lp-cta">
+      <h2 class="lp-cta-heading">Are you ready to move?</h2>
+      <button class="btn btn-amber" onclick="startFlow()">Enter Strider</button>
     </section>
 
     <!-- Section 5 — Footer -->
@@ -1525,22 +1507,22 @@
       <div class="code-card">
         <div class="code-numeral">I</div>
         <div class="code-principle">You are not broken. You are between.</div>
-        <div class="code-desc">Where you are is a position, not a verdict.</div>
+        <div class="code-desc">Where you are right now is not a verdict. It is a position. Positions change. Men who accept this move forward. Men who don't, stay.</div>
       </div>
       <div class="code-card">
         <div class="code-numeral">II</div>
         <div class="code-principle">Solitude is not failure. It is the forge.</div>
-        <div class="code-desc">The man comfortable alone connects from wholeness, not need.</div>
+        <div class="code-desc">Being alone is not the problem. Fearing it is. The man who is comfortable in his own company connects from wholeness, not need.</div>
       </div>
       <div class="code-card">
         <div class="code-numeral">III</div>
         <div class="code-principle">Identity is built through action, not reflection.</div>
-        <div class="code-desc">You do not think your way to becoming. You act.</div>
+        <div class="code-desc">You do not think your way to becoming someone. You act. You show up. You do the thing, especially when you don't feel like it. That is who you are.</div>
       </div>
       <div class="code-card">
         <div class="code-numeral">IV</div>
         <div class="code-principle">A brother makes you accountable to more than yourself.</div>
-        <div class="code-desc">One man who shows up is worth more than a thousand followers.</div>
+        <div class="code-desc">One man who shows up for you, and for whom you show up, is worth more than a thousand followers. Brotherhood is not sentiment. It is presence.</div>
       </div>
     </div>
     <div class="code-footer">
