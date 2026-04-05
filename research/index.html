@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Strider | Research Archive</title>
+  <meta name="description" content="The scale of male loneliness, the neuroscience of social connection, and the growing market opportunity to address it.">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --cream: #FAF5EC;
+      --stone: #2C2416;
+      --earth: #4A3728;
+      --amber: #C4873A;
+      --amber-light: #E8A84E;
+      --parchment: #F5ECD7;
+      --parchment-dark: #E8D9C0;
+      --sage: #5C6B4A;
+      --ash: #8C7B6B;
+      --text-dark: #1A1208;
+      --text-mid: #4A3728;
+      --text-light: #8C7B6B;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    /* Navigation */
+    nav {
+      padding: 30px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(196, 135, 58, 0.15);
+    }
+    
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--stone);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+    }
+
+    .back-btn {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ash);
+      text-decoration: none;
+      transition: color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .back-btn::before {
+      content: '←';
+      font-size: 14px;
+      transition: transform 0.2s;
+    }
+
+    .back-btn:hover {
+      color: var(--amber);
+    }
+
+    .back-btn:hover::before {
+      transform: translateX(-4px);
+    }
+
+    /* Header */
+    .research-header {
+      padding: 80px 40px 60px;
+      text-align: center;
+      background: var(--stone);
+      color: var(--cream);
+      border-bottom: 3px solid var(--amber);
+    }
+
+    .subtitle {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 20px;
+    }
+
+    .title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 48px;
+      font-weight: 600;
+      line-height: 1.2;
+      color: var(--parchment);
+      margin-bottom: 24px;
+    }
+
+    .desc {
+      font-size: 16px;
+      font-weight: 300;
+      color: var(--ash);
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+
+    /* Content */
+    .content-wrapper {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 80px 40px;
+    }
+
+    .category {
+      margin-bottom: 80px;
+    }
+
+    .category-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--stone);
+      margin-bottom: 32px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(196, 135, 58, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    
+    .category-title::before {
+      content: '';
+      display: block;
+      width: 8px;
+      height: 8px;
+      background: var(--amber);
+      border-radius: 50%;
+    }
+
+    .link-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .link-card {
+      display: block;
+      background: white;
+      border: 1px solid var(--parchment-dark);
+      padding: 24px 32px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .link-card::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 3px;
+      background: var(--amber);
+      transform: scaleY(0);
+      transition: transform 0.3s ease;
+      transform-origin: bottom;
+    }
+
+    .link-card:hover {
+      box-shadow: 0 10px 30px rgba(44, 36, 22, 0.05);
+      border-color: var(--amber);
+      transform: translateY(-2px);
+    }
+
+    .link-card:hover::before {
+      transform: scaleY(1);
+    }
+
+    .pub-name {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 8px;
+    }
+
+    .article-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--stone);
+      margin-bottom: 12px;
+      line-height: 1.4;
+      transition: color 0.2s;
+    }
+
+    .link-card:hover .article-title {
+      color: var(--earth);
+    }
+    
+    .article-meta {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    
+    .read-more {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ash);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+    
+    .read-more::after {
+      content: '→';
+      font-size: 14px;
+      transition: transform 0.2s;
+    }
+    
+    .link-card:hover .read-more {
+      color: var(--amber);
+    }
+    
+    .link-card:hover .read-more::after {
+      transform: translateX(4px);
+    }
+
+    @media (max-width: 768px) {
+      .title {
+        font-size: 36px;
+      }
+      .content-wrapper {
+        padding: 40px 20px;
+      }
+      .link-card {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <a href="/" class="logo">Strider.</a>
+    <a href="/" class="back-btn">Return</a>
+  </nav>
+
+  <!-- Header -->
+  <header class="research-header">
+    <div class="subtitle">The Data & The Science</div>
+    <h1 class="title">Research Archive</h1>
+    <p class="desc">A curated collection of research, data, and insights outlining the scale of male loneliness, the neuroscience of social connection, and the growing market opportunity to address it.</p>
+  </header>
+
+  <!-- Content -->
+  <div class="content-wrapper">
+    
+    <!-- Section 1 -->
+    <section class="category">
+      <h2 class="category-title">Scale and Data</h2>
+      <div class="link-list">
+        
+        <a href="https://news.gallup.com/poll/690788/younger-men-among-loneliest-west.aspx" target="_blank" class="link-card">
+          <div class="pub-name">Gallup World Poll 2023–2024</div>
+          <h3 class="article-title">1 in 4 young American men report feeling lonely</h3>
+          <div class="article-meta">
+            <span class="read-more">Read Article</span>
+          </div>
+        </a>
+
+        <a href="https://www.americansurveycenter.org/research/the-state-of-american-friendship-change-challenges-and-loss/" target="_blank" class="link-card">
+          <div class="pub-name">Survey Center on American Life 2021</div>
+          <h3 class="article-title">Fivefold increase in men with no close friends since 1990</h3>
+          <div class="article-meta">
+            <span class="read-more">Read Article</span>
+          </div>
+        </a>
+
+        <a href="https://equimundo.org/resources/state-of-american-men/" target="_blank" class="link-card">
+          <div class="pub-name">Equimundo State of American Men 2023</div>
+          <h3 class="article-title">Two thirds of men 18–23 say "no one really knows me"</h3>
+          <div class="article-meta">
+            <span class="read-more">Read Article</span>
+          </div>
+        </a>
+
+        <a href="https://www.pewresearch.org/social-trends/2024/09/10/men-women-and-social-connections/" target="_blank" class="link-card">
+          <div class="pub-name">Pew Research Center 2024</div>
+          <h3 class="article-title">Men, Women and Social Connections</h3>
+          <div class="article-meta">
+            <span class="read-more">Read Article</span>
+          </div>
+        </a>
+
+        <a href="https://www.washingtonpost.com/nation/2025/05/21/lonely-young-american-men-poll/" target="_blank" class="link-card">
+          <div class="pub-name">Washington Post 2025</div>
+          <h3 class="article-title">Young American men are lonelier than young women</h3>
+          <div class="article-meta">
+            <span class="read-more">Read Article</span>
+          </div>
+        </a>
+
+        <a href="https://www.hhs.gov/surgeongeneral/reports-and-publications/social-connection/index.html" target="_blank" class="link-card">
+          <div class="pub-name">U.S. Surgeon General 2023</div>
+          <h3 class="article-title">Our Epidemic of Loneliness and Isolation</h3>
+          <div class="article-meta">
+            <span class="read-more">Read Article</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- Section 2 -->
+    <section class="category">
+      <h2 class="category-title">The Neuroscience</h2>
+      <div class="link-list">
+
+        <a href="https://www.amazon.com/Loneliness-Human-Nature-Need-Connection/dp/0393335283" target="_blank" class="link-card">
+          <div class="pub-name">Cacioppo</div>
+          <h3 class="article-title">Loneliness: Human Nature and the Need for Social Connection</h3>
+          <div class="article-meta">
+            <span class="read-more">Read Book</span>
+          </div>
+        </a>
+
+        <a href="https://www.amazon.com/Mans-Search-Meaning-Viktor-Frankl/dp/0807014273" target="_blank" class="link-card">
+          <div class="pub-name">Frankl</div>
+          <h3 class="article-title">Man's Search for Meaning</h3>
+          <div class="article-meta">
+            <span class="read-more">Read Book</span>
+          </div>
+        </a>
+
+        <a href="https://pubmed.ncbi.nlm.nih.gov/28857625/" target="_blank" class="link-card">
+          <div class="pub-name">Weinstein</div>
+          <h3 class="article-title">Solitude and Social Connection Research</h3>
+          <div class="article-meta">
+            <span class="read-more">Read Paper</span>
+          </div>
+        </a>
+
+        <a href="https://news.virginia.edu/content/1-4-young-men-are-lonely-uva-researcher-explains-why-and-how-help" target="_blank" class="link-card">
+          <div class="pub-name">UVA</div>
+          <h3 class="article-title">Why Men Underreport Loneliness</h3>
+          <div class="article-meta">
+            <span class="read-more">Read Article</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- Section 3 -->
+    <section class="category">
+      <h2 class="category-title">Market Opportunity</h2>
+      <div class="link-list">
+
+        <a href="https://www.custommarketinsights.com/report/self-improvement-market/" target="_blank" class="link-card">
+          <div class="pub-name">Custom Market Insights 2025</div>
+          <h3 class="article-title">Self-Improvement Market</h3>
+          <div class="article-meta">
+            <span class="read-more">Read Report</span>
+          </div>
+        </a>
+
+        <a href="https://www.grandviewresearch.com/industry-analysis/personal-development-market" target="_blank" class="link-card">
+          <div class="pub-name">Grand View Research</div>
+          <h3 class="article-title">Personal Development Market</h3>
+          <div class="article-meta">
+            <span class="read-more">Read Report</span>
+          </div>
+        </a>
+
+        <a href="https://aibm.org/research/male-loneliness-and-isolation-what-the-data-shows/" target="_blank" class="link-card">
+          <div class="pub-name">American Institute for Boys and Men</div>
+          <h3 class="article-title">Male Loneliness Data</h3>
+          <div class="article-meta">
+            <span class="read-more">Read Data</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+  </div>
+
+</body>
+</html>
