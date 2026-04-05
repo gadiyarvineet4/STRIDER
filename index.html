@@ -1302,6 +1302,41 @@
       opacity: 0.35;
     }
 
+    /* ===== MODALS & NEW SCREENS ===== */
+    .strider-modal {
+      position: fixed; inset: 0; background: rgba(26,18,8,0.85); backdrop-filter: blur(5px);
+      display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden;
+      transition: all 0.3s; z-index: 2000;
+    }
+    .strider-modal.active { opacity: 1; visibility: visible; }
+    .modal-box { background: var(--cream); padding: 48px; border: 1px solid var(--parchment-dark); position: relative; max-width: 400px; width: 100%; transform: translateY(20px); transition: transform 0.3s; }
+    .strider-modal.active .modal-box { transform: translateY(0); }
+    .modal-close { position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 24px; color: var(--ash); cursor: pointer; }
+    .modal-input { width: 100%; font-family: 'DM Sans', sans-serif; font-size: 15px; padding: 14px 16px; border: 1px solid var(--parchment-dark); background: transparent; color: var(--stone); margin-bottom: 16px; outline: none; }
+    .modal-input:focus { border-color: var(--amber); }
+
+    .stage-timeline { display: flex; align-items: center; margin: 32px 0 48px; gap: 12px; }
+    .stage-node { width: 8px; height: 8px; border-radius: 50%; background: var(--parchment-dark); position: relative; }
+    .stage-node.active { background: var(--amber); box-shadow: 0 0 0 4px rgba(196,135,58,0.2); }
+    .stage-line { height: 1px; flex: 1; background: var(--parchment-dark); }
+    .stage-label { position: absolute; top: 16px; left: 50%; transform: translateX(-50%); font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ash); white-space: nowrap; }
+    .stage-node.active .stage-label { color: var(--stone); font-weight: 500; }
+
+    .lp-build { background: var(--cream); padding: 120px 80px; }
+    .lp-build-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-top: 48px; }
+    .build-card { border: 1px solid var(--parchment-dark); padding: 32px; background: white; }
+
+    .bite-card { background: var(--parchment); border-left: 3px solid var(--amber); padding: 40px; margin-bottom: 24px; max-width: 680px; }
+    .bite-quote { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: var(--earth); line-height: 1.4; margin-bottom: 16px; font-style: italic; }
+    .bite-author { font-size: 14px; color: var(--stone); font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; }
+
+    .mission-select-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(196,135,58,0.2); padding: 32px; cursor: pointer; transition: all 0.2s; }
+    .mission-select-card:hover { background: rgba(255,255,255,0.08); }
+    .mission-select-card.selected { border-color: var(--amber); background: rgba(196,135,58,0.12); }
+    
+    .ai-text-line { opacity: 0; transform: translateY(10px); transition: opacity 0.4s, transform 0.4s; font-family: 'Cormorant Garamond', serif; font-size: 22px; font-style: italic; color: var(--text-mid); margin-bottom: 8px; }
+    .ai-text-line.active { opacity: 1; transform: translateY(0); }
+
     /* ===== RESPONSIVE ===== */
     @media (max-width: 768px) {
       .lp-hero {
@@ -1395,6 +1430,36 @@
         padding: 32px 28px;
       }
     }
+    /* ===== UX ENHANCEMENTS ===== */
+    .btn:active { transform: scale(0.97) translateY(0); }
+    .option-card:hover { transform: translateY(-3px); box-shadow: 0 4px 16px rgba(44, 36, 22, 0.08); }
+    .mission-select-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(44, 36, 22, 0.12); border-color: var(--amber); }
+
+    /* Reveal Up */
+    .reveal-up {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .reveal-up.is-visible { opacity: 1; transform: translateY(0); }
+
+    /* Sticky Nav */
+    .sticky-nav {
+      position: fixed; top: 0; left: 0; width: 100%; padding: 16px 48px;
+      background: rgba(250,245,236,0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      display: flex; justify-content: space-between; align-items: center; z-index: 1000;
+      transform: translateY(-100%); transition: transform 0.4s ease; border-bottom: 1px solid rgba(196,135,58,0.1);
+    }
+    .sticky-nav.visible { transform: translateY(0); }
+
+    /* Multi-Dot Loading */
+    .loading-dot-small {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--amber);
+      animation: bounceDot 1.4s infinite ease-in-out both; 
+    }
+    @keyframes bounceDot {
+      0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
+      40% { transform: scale(1); opacity: 1; }
+    }
   </style>
 </head>
 
@@ -1407,6 +1472,15 @@
 
   <!-- BACK TO HOME (visible during onboarding) -->
   <a class="back-home" id="backHome" onclick="backToLanding()">← Back to home</a>
+
+  <!-- STICKY NAV -->
+  <nav class="sticky-nav" id="stickyNav">
+    <div style="font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 700; letter-spacing: 0.15em; color: var(--stone); text-transform: uppercase;">STRIDER</div>
+    <div style="display: flex; gap: 12px; align-items: center;">
+      <button class="btn btn-outline" style="padding: 8px 16px; font-size: 13px;" onclick="openModal('loginModal')">Login</button>
+      <button class="btn btn-stone" style="padding: 8px 16px; font-size: 13px;" onclick="startFlow()">Enter Strider</button>
+    </div>
+  </nav>
 
   <!-- ===== LANDING PAGE ===== -->
   <div id="landing-page">
@@ -1423,11 +1497,12 @@
         </p>
         <div class="lp-hero-buttons">
           <button class="btn btn-stone" onclick="startFlow()">Create Account</button>
-          <button class="btn btn-outline" onclick="startFlow()">Login</button>
+          <button class="btn btn-outline" onclick="openModal('loginModal')">Login</button>
         </div>
-        <div class="scroll-indicator">
-          <span class="scroll-line"></span>
-          Scroll to explore
+        <div style="display: flex; gap: 24px; margin-top: 24px;">
+           <a href="#lp-problem" style="color: var(--amber); font-size: 13px; text-decoration: none; border-bottom: 1px dotted var(--amber); letter-spacing: 0.05em; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Why Strider exists</a>
+           <a href="#lp-how" style="color: var(--amber); font-size: 13px; text-decoration: none; border-bottom: 1px dotted var(--amber); letter-spacing: 0.05em; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">How it works</a>
+           <a href="#lp-build" style="color: var(--amber); font-size: 13px; text-decoration: none; border-bottom: 1px dotted var(--amber); letter-spacing: 0.05em; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">The destination</a>
         </div>
       </div>
       <div class="hero-right">
@@ -1441,7 +1516,7 @@
     </section>
 
     <!-- Section 2 — The Problem -->
-    <section class="lp-problem">
+    <section class="lp-problem reveal-up" id="lp-problem">
       <div class="label">Why Strider exists</div>
       <h2 class="lp-problem-heading">"A man can be surrounded by people and still be completely alone."</h2>
       <div class="lp-problem-body">
@@ -1454,7 +1529,7 @@
     </section>
 
     <!-- Section 3 — How It Works -->
-    <section class="lp-how">
+    <section class="lp-how reveal-up" id="lp-how">
       <div class="lp-how-header">
         <div class="label">How It Works</div>
         <h2 class="heading-lg" style="color: var(--stone);">The Path</h2>
@@ -1481,7 +1556,27 @@
       </div>
     </section>
 
-    <!-- Section 4 — Final CTA -->
+    <!-- Section 4 — What You'll Build -->
+    <section class="lp-build reveal-up" id="lp-build">
+      <div class="label" style="text-align: center;">The Destination</div>
+      <h2 class="lp-problem-heading" style="text-align: center;">What You'll Build</h2>
+      <div class="lp-build-grid">
+        <div class="build-card">
+          <div class="code-principle" style="color: var(--stone);">Self Regulation</div>
+          <div class="code-desc">Learn to sit with discomfort. Build accountability to yourself first. The evening check-in is where this lives.</div>
+        </div>
+        <div class="build-card">
+          <div class="code-principle" style="color: var(--stone);">Meaningful Relationships</div>
+          <div class="code-desc">Brotherhood built through parallel action and shared missions. Trust earned not assigned.</div>
+        </div>
+        <div class="build-card">
+          <div class="code-principle" style="color: var(--stone);">A System for Living</div>
+          <div class="code-desc">Your own ritual, your own philosophy, your own code. Not borrowed from anyone else.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5 — Final CTA -->
     <section class="lp-cta">
       <h2 class="lp-cta-heading">Are you ready to move?</h2>
       <button class="btn btn-amber" onclick="startFlow()">Enter Strider</button>
@@ -1572,9 +1667,18 @@
       </div>
 
       <!-- Loading -->
-      <div class="onboarding-loading" id="onboardingLoading">
-        <div class="loading-dot"></div>
-        <div class="loading-text">Strider is building your practice.</div>
+      <div class="onboarding-loading" id="onboardingLoading" style="height: auto; min-height: 200px; flex-direction: column; justify-content: center; align-items: center;">
+        <div class="loading-dots-container" style="display: flex; gap: 8px; margin-bottom: 48px;">
+          <div class="loading-dot-small"></div>
+          <div class="loading-dot-small" style="animation-delay: 0.2s"></div>
+          <div class="loading-dot-small" style="animation-delay: 0.4s"></div>
+        </div>
+        <div id="aiLinesContainer" style="text-align: center;">
+          <div class="ai-text-line" id="aiLine1">Reading your answers...</div>
+          <div class="ai-text-line" id="aiLine2">Mapping your terrain...</div>
+          <div class="ai-text-line" id="aiLine3">Building your ritual...</div>
+          <div class="ai-text-line" id="aiLine4">Finding your brother...</div>
+        </div>
       </div>
     </div>
   </div>
@@ -1619,15 +1723,34 @@
       </div>
     </div>
 
-    <button class="btn btn-amber" onclick="goTo(5)">This is my ritual</button>
+    <button class="btn btn-amber" onclick="goTo('step-bites')">This is my ritual</button>
   </div>
 
-  <!-- ===== STEP 5 — MEET YOUR BROTHER ===== -->
+  <!-- ===== STEP 9 — DAILY BITES ===== -->
+  <div class="step" id="step-bites" style="background: var(--stone); padding: 80px; display: flex; flex-direction: column; justify-content: center; min-height: 100vh;">
+    <div class="code-header" style="text-align: center; max-width: 680px; margin: 0 auto 56px;">
+      <div class="label">Your First Bite</div>
+      <h2 class="heading-lg" style="color: var(--parchment);">The Philosophy, Made Daily.</h2>
+      <div style="font-size: 16px; color: var(--ash); margin-top: 16px; font-weight: 300; line-height: 1.7;">Every day, one thought. Pulled from the world's great thinkers. Tailored to where you are right now. Not inspiration. Instruction.</div>
+    </div>
+    <div style="display: flex; justify-content: center;">
+      <div class="bite-card" id="biteCard">
+        <div class="bite-quote" id="biteQuote">"The impediment to action advances action. What stands in the way becomes the way."</div>
+        <div class="bite-author" id="biteAuthor">— Marcus Aurelius</div>
+      </div>
+    </div>
+    <div style="text-align: center;">
+      <div style="font-size: 14px; color: var(--ash); margin-bottom: 32px; font-style: italic;">Tomorrow brings a new one. Each one chosen for who you are becoming.</div>
+      <button class="btn btn-amber" onclick="goTo('step-brother')">I'm ready to meet my brother</button>
+    </div>
+  </div>
+
+  <!-- ===== STEP 10 — MEET YOUR BROTHER ===== -->
   <div class="step" id="step-brother">
     <div class="brother-header">
       <div class="label">Your Match</div>
       <h2 class="heading-lg" style="color: var(--stone);">Meet Your Brother</h2>
-      <div class="brother-sub">One man. Chosen carefully. Not a chat partner — a partner in the practice.</div>
+      <div class="brother-sub">One man. Chosen carefully. Trust is built slowly — not assigned.</div>
     </div>
 
     <div class="brother-layout">
@@ -1637,71 +1760,81 @@
             <div class="status-dot"></div>
             <span class="status-text">Active today</span>
           </div>
-          <div class="brother-name">James, 38</div>
-          <div class="brother-location">Chicago, IL</div>
-          <div class="brother-context">
-            Left a 10-year career in finance eight months ago. Relocated. Rebuilding from scratch. Knows what it feels
-            like to lose the plot on who you are.
+          <div class="brother-name" id="brName">James, 38</div>
+          <div class="brother-location" id="brLoc">Chicago, IL</div>
+          <div class="brother-context" id="brCtx">
+            Left a 10-year career in finance eight months ago. Relocated. Rebuilding from scratch. Knows what it feels like to lose the plot on who you are.
           </div>
-          <div class="brother-tags">
+          <div class="brother-tags" id="brTags">
             <span class="brother-tag">Early riser</span>
             <span class="brother-tag">Building something</span>
             <span class="brother-tag">Into the outdoors</span>
             <span class="brother-tag">Cooks seriously</span>
           </div>
-          <div class="brother-matched">
-            Matched on: career identity loss, commitment to physical practice, proximity — Chicago, IL
-          </div>
         </div>
       </div>
 
       <div class="rationale-box">
-        <div class="rationale-text">
-          James is eight months ahead of where you are. He's been through the disorientation you're in and is building
-          his way out. You're not matched because you're similar. You're matched because the timing is right.
+        <div class="rationale-text" id="brRationale">
+          Matched on three things: you're both navigating identity loss after a major life change; you're both committed to a physical daily practice; and you're both in Chicago. James is eight months ahead of where you are. That's intentional.
+        </div>
+        
+        <div style="margin-top: 32px;">
+          <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--stone); font-weight: 600; margin-bottom: 24px;">Trust is built in stages</div>
+          <div class="stage-timeline">
+            <div class="stage-node active"><div class="stage-label">Stage 1</div></div>
+            <div class="stage-line"></div>
+            <div class="stage-node"><div class="stage-label">Stage 2</div></div>
+            <div class="stage-line"></div>
+            <div class="stage-node"><div class="stage-label">Stage 3</div></div>
+          </div>
+          <div style="font-size: 13px; color: var(--text-mid); line-height: 1.6; margin-bottom: 12px;"><strong>Stage 1 — Parallel (You are here)</strong><br>Do your ritual independently. Report back. No meetup yet.</div>
+          <div style="font-size: 13px; color: var(--text-mid); line-height: 1.6; margin-bottom: 12px;"><strong>Stage 2 — Shared Mission (2 weeks)</strong><br>First real world thing together. Bond is formed before you arrive.</div>
+          <div style="font-size: 13px; color: var(--text-mid); line-height: 1.6;"><strong>Stage 3 — Brotherhood (Ongoing)</strong><br>Missions get bigger. The relationship is real.</div>
         </div>
       </div>
     </div>
-
-    <button class="btn btn-amber" id="acceptBrotherBtn" onclick="acceptBrother()">Accept your brother</button>
+    
+    <div style="display: flex; align-items: center; justify-content: space-between;">
+      <button class="btn btn-amber" id="acceptBrotherBtn" onclick="acceptBrother()">Accept James as your brother</button>
+      <div style="font-size: 13px; color: var(--ash);">
+        Not clicking with <span id="brRef1">James</span>? <a href="#" style="color: var(--amber); text-decoration: none; border-bottom: 1px dotted var(--amber);" onclick="openModal('rematchModal'); return false;">Request a different brother</a>
+      </div>
+    </div>
   </div>
 
-  <!-- ===== STEP 6 — THE MISSION ===== -->
-  <div class="step" id="step-mission">
-    <div class="mission-header">
-      <div class="label">Active Mission</div>
-      <h2 class="heading-lg" style="color: var(--parchment);">Your First Mission</h2>
-      <div class="mission-sub">Something real. Something worth doing. No performance required.</div>
+  <!-- ===== STEP 11 — CHOOSE YOUR MISSION ===== -->
+  <div class="step" id="step-mission-choice" style="background: var(--stone); padding: 80px; display: flex; flex-direction: column; justify-content: center; min-height: 100vh;">
+    <div class="mission-header" style="text-align: center; margin-bottom: 64px;">
+      <div class="label">Your First Mission</div>
+      <h2 class="heading-lg" style="color: var(--parchment);">Pick something real.</h2>
+      <div class="mission-sub" style="margin: 16px auto 0;">Stage 1 means you do this independently. <span id="brRef2">James</span> does his version. You both report back. No meetup yet — just parallel action.</div>
     </div>
-
-    <div class="mission-card">
-      <div class="mission-posted">Posted by James</div>
-      <div class="mission-title">"Clear the trail at Starved Rock. 6am. Bring work gloves."</div>
-      <div class="mission-detail">
-        A real thing that needs doing. You show up, you work, you don't have to perform. The conversation happens on its
-        own.
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; max-width: 1000px; margin: 0 auto 48px;">
+      <div class="mission-select-card" onclick="selectMission(this)">
+        <div style="font-size: 10px; color: var(--amber); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px;">Mission A — Outdoors</div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--parchment); margin-bottom: 12px; line-height: 1.3;">Get outside before 8am. No phone. 30 minutes.</div>
+        <div style="font-size: 14px; color: var(--ash); line-height: 1.6; margin-bottom: 24px;">Walk, run, sit. Doesn't matter. Just be outside before the day takes over.</div>
+        <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ash);">Solo / This week</div>
       </div>
-      <div class="mission-meta">
-        <div class="mission-meta-item">
-          <div class="meta-label">When</div>
-          <div class="meta-value">Saturday, 6:00 AM</div>
-        </div>
-        <div class="mission-meta-item">
-          <div class="meta-label">Where</div>
-          <div class="meta-value">Starved Rock, IL</div>
-        </div>
-        <div class="mission-meta-item">
-          <div class="meta-label">Duration</div>
-          <div class="meta-value">3–4 hours</div>
-        </div>
-        <div class="mission-meta-item">
-          <div class="meta-label">What you need</div>
-          <div class="meta-value">Work gloves and boots</div>
-        </div>
+      <div class="mission-select-card" onclick="selectMission(this)">
+        <div style="font-size: 10px; color: var(--amber); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px;">Mission B — Build something</div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--parchment); margin-bottom: 12px; line-height: 1.3;">Cook one proper meal from scratch this week.</div>
+        <div style="font-size: 14px; color: var(--ash); line-height: 1.6; margin-bottom: 24px;">Not a recipe you know. Something new. Something that takes time and attention.</div>
+        <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ash);">Solo / This week</div>
       </div>
-      <button class="btn btn-amber btn-full" id="missionBtn" onclick="joinMission()">I'll be there</button>
+      <div class="mission-select-card" onclick="selectMission(this)">
+        <div style="font-size: 10px; color: var(--amber); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px;">Mission C — Create something</div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--parchment); margin-bottom: 12px; line-height: 1.3;">Spend one hour on something you've been putting off.</div>
+        <div style="font-size: 14px; color: var(--ash); line-height: 1.6; margin-bottom: 24px;">The project, the skill, the thing you keep saying you'll get to. One hour. This week.</div>
+        <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ash);">Solo / This week</div>
+      </div>
     </div>
-    <p class="mission-footnote">This is how it starts. Not with a conversation. With showing up.</p>
+    
+    <div style="text-align: center;">
+      <button class="btn btn-amber" id="confirmMissionBtn" style="opacity: 0; visibility: hidden; transition: all 0.3s;" onclick="goTo('step-dashboard')">This is my mission</button>
+    </div>
   </div>
 
   <!-- ===== STEP 7 — DASHBOARD ===== -->
@@ -1729,8 +1862,8 @@
             <div class="dash-ritual-desc">Did you move today?</div>
           </div>
         </div>
-        <div class="dash-ritual-card">
-          <div class="checkbox" onclick="toggleCheck(this)"></div>
+        <div class="dash-ritual-card" style="cursor:pointer;" onclick="goTo('step-evening')">
+          <div class="checkbox" style="pointer-events:none;"></div>
           <div>
             <div class="dash-ritual-time">Evening</div>
             <div class="dash-ritual-name">Close the day</div>
@@ -1739,37 +1872,56 @@
         </div>
       </div>
     </div>
+    
+    <!-- Today's Bite -->
+    <div class="dash-section">
+      <div class="dash-section-label">Today's Bite</div>
+      <div class="bite-card" style="padding: 24px; margin-bottom: 0;">
+        <div class="bite-quote" id="dashBiteQuote" style="font-size: 20px; margin-bottom: 8px;">"The impediment to action advances action. What stands in the way becomes the way."</div>
+        <div style="font-size: 13px; color: var(--ash); font-style: italic;">Tomorrow brings a new one.</div>
+      </div>
+    </div>
 
     <!-- Brother -->
     <div class="dash-section">
       <div class="dash-section-label">Your Brother</div>
-      <div class="dash-brother-card" id="dashBrotherCard">
-        <div class="dash-brother-left">
-          <div>
-            <div class="brother-status" style="margin-bottom:8px">
-              <div class="status-dot"></div>
-              <span class="status-text">Active today</span>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div class="dash-brother-card" id="dashBrotherCard">
+          <div class="dash-brother-left">
+            <div style="width: 100%;">
+              <div class="brother-status" style="margin-bottom:8px">
+                <div class="status-dot"></div>
+                <span class="status-text"><span id="brRef3">James</span>, Active today</span>
+              </div>
+              <h4 style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--stone);margin-bottom:4px">
+                Stage 1 — Parallel
+              </h4>
+              <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ash); margin-top: 16px;">Day 1 of 14 until Stage 2</div>
+              <div style="width: 100%; height: 2px; background: var(--parchment-dark); margin-top: 8px; position: relative;"><div style="position: absolute; left: 0; top: 0; height: 100%; width: 7%; background: var(--amber);"></div></div>
             </div>
-            <h4
-              style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--stone);margin-bottom:4px">
-              James, 38</h4>
-            <p style="font-size:13px;color:var(--ash)">Starved Rock. Saturday. You're in.</p>
           </div>
         </div>
-        <button class="btn-sm" id="noteBtn" onclick="showNoteInput()">Send a note</button>
-      </div>
-      <div class="note-input-area" id="noteArea">
-        <input type="text" class="note-input" placeholder="Write something to James...">
-        <button class="note-send" onclick="sendNote()">Send</button>
+        
+        <div class="dash-brother-card" style="display: flex; flex-direction: column; align-items: flex-start;">
+          <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--amber); margin-bottom: 8px;">Active Mission</div>
+          <div style="font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600; color: var(--stone); margin-bottom: 12px; line-height: 1.3;" id="dashActiveMission">Get outside before 8am. No phone. 30 minutes.</div>
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
+            <div class="checkbox" onclick="toggleCheck(this)"></div>
+            <span style="font-size: 13px; color: var(--ash);">Mark as complete</span>
+          </div>
+          <textarea class="note-input" id="dashNoteInput" style="width: 100%; margin-bottom: 12px; resize: none; overflow: hidden;" rows="1" oninput="this.style.height='';this.style.height=this.scrollHeight+'px'" placeholder="Tell James what you did"></textarea>
+          <button class="note-send">Send update</button>
+        </div>
       </div>
     </div>
 
     <!-- Post a Mission -->
     <div class="dash-section">
-      <div class="dash-section-label">Post a Mission</div>
-      <div class="dash-mission-card">
-        <input type="text" class="mission-input" placeholder="What are you going out to do?">
-        <button class="btn btn-stone" style="padding:12px 28px;font-size:12px">Post Mission</button>
+      <div class="dash-section-label">Post a Mission (Locked)</div>
+      <div class="dash-mission-card" style="opacity: 0.6; pointer-events: none; text-align: center; padding: 48px 24px;">
+        <div style="font-size: 24px; color: var(--ash); margin-bottom: 16px;">🔒</div>
+        <div style="font-size: 15px; color: var(--stone); font-weight: 500; margin-bottom: 8px;">Unlocks at Stage 2</div>
+        <div style="font-size: 13px; color: var(--ash);">Keep showing up to unlock shared missions.</div>
       </div>
     </div>
 
@@ -1779,124 +1931,150 @@
     </div>
   </div>
 
+  <!-- ===== STEP 13 — EVENING CHECK-IN ===== -->
+  <div class="step" id="step-evening" style="background: var(--stone); padding: 80px; display: flex; flex-direction: column; justify-content: center; min-height: 100vh;">
+    <div style="max-width: 680px; width: 100%; margin: 0 auto;">
+      <div class="label" style="margin-bottom: 24px;">Evening</div>
+      <h2 class="heading-lg" style="color: var(--parchment); margin-bottom: 48px;">What did you do with what you had today?</h2>
+      
+      <div id="eveningInputArea">
+        <textarea id="eveningInput" rows="1" oninput="this.style.height='';this.style.height=this.scrollHeight+'px'" style="width: 100%; font-family: 'DM Sans', sans-serif; font-size: 18px; padding: 20px 24px; border: 1px solid rgba(196,135,58,0.3); background: rgba(255,255,255,0.02); color: var(--cream); margin-bottom: 24px; outline: none; resize: none; overflow: hidden;" placeholder="One line. Honest."></textarea>
+        <button class="btn btn-amber" onclick="submitEvening()">Close the day</button>
+      </div>
+      
+      <div id="eveningResponseArea" style="display: none; margin-top: 48px;">
+        <div class="bite-card" style="padding: 32px; background: rgba(245,236,215,0.05); border-left-color: var(--sage);">
+          <div style="font-size: 18px; color: var(--parchment); line-height: 1.6; font-style: italic;" id="eveningResponseText"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODALS -->
+  <div class="strider-modal" id="loginModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('loginModal')">×</button>
+      <div class="label">Welcome back</div>
+      <h2 class="heading-lg" style="color: var(--stone); font-size: 36px; margin-bottom: 24px;">Login</h2>
+      <input type="email" class="modal-input" placeholder="Email address">
+      <input type="password" class="modal-input" placeholder="Password">
+      <button class="btn btn-stone btn-full" style="margin-top: 16px;" onclick="closeModal('loginModal'); startFlow();">Enter Strider</button>
+    </div>
+  </div>
+
+  <div class="strider-modal" id="rematchModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('rematchModal')">×</button>
+      <div class="label">Rematch</div>
+      <h2 class="heading-lg" style="color: var(--stone); font-size: 32px; margin-bottom: 16px;">Request different brother</h2>
+      <p style="color: var(--ash); font-size: 14px; margin-bottom: 24px; line-height: 1.6;">We'll find someone better suited. <span id="brRef4">James</span> won't be notified.</p>
+      <div style="display: flex; gap: 12px;">
+        <button class="btn btn-stone" style="flex: 1; padding: 14px;" onclick="rematchBrother()">Confirm</button>
+        <button class="btn btn-outline" style="flex: 1; padding: 14px; text-align: center; color: var(--stone); border-color: var(--parchment-dark);" onclick="closeModal('rematchModal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     // ===== STATE =====
-    let currentStep = 0; // 0 = landing page
-    const totalSteps = 6; // steps 2-7
+    let currentStepIndex = 0;
+    let currentBrotherName = "James";
+    const flowSteps = [
+      'step-code', 'step-onboarding', 'step-ritual', 'step-bites', 
+      'step-brother', 'step-mission-choice', 'step-dashboard'
+    ];
+    const totalSteps = flowSteps.length;
     const answers = {};
+
+    function openModal(id) { document.getElementById(id).classList.add('active'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
     // ===== START FLOW =====
     function startFlow() {
       document.getElementById('landing-page').classList.add('hidden');
       document.body.classList.add('in-flow');
       document.getElementById('backHome').classList.add('visible');
-      goTo(2);
+      goTo('step-code');
     }
 
     function backToLanding() {
-      // Hide all steps
       document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
       document.getElementById('progressBar').classList.remove('visible');
       document.getElementById('backHome').classList.remove('visible');
       document.body.classList.remove('in-flow');
-
-      // Show landing page
       const lp = document.getElementById('landing-page');
       lp.classList.remove('hidden');
-      lp.scrollTop = 0;
-      window.scrollTo(0, 0);
-      currentStep = 0;
-
-      // Reset onboarding state
+      lp.scrollTop = 0; window.scrollTo(0, 0);
       resetOnboarding();
     }
 
     function resetOnboarding() {
-      // Reset Code button
       const codeBtn = document.getElementById('acceptCodeBtn');
       codeBtn.textContent = 'I accept the code';
-      codeBtn.style.background = '';
-      codeBtn.style.color = '';
-      codeBtn.style.pointerEvents = '';
+      codeBtn.style.background = ''; codeBtn.style.color = ''; codeBtn.style.pointerEvents = '';
 
-      // Reset onboarding questions
       document.querySelectorAll('.onboarding-question').forEach(q => q.classList.remove('active'));
       document.getElementById('q1').classList.add('active');
       document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
       document.getElementById('onboardingProgress').style.display = '';
       document.getElementById('onboardingProgress').textContent = '1 of 3';
-      document.getElementById('onboardingLoading').classList.remove('active');
+      document.getElementById('onboardingLoading').style.display = 'none';
 
-      // Reset brother button
+      document.querySelectorAll('.ai-text-line').forEach(l => l.classList.remove('active'));
+
       const brotherBtn = document.getElementById('acceptBrotherBtn');
-      brotherBtn.textContent = 'Accept your brother';
-      brotherBtn.style.background = '';
-      brotherBtn.style.color = '';
-      brotherBtn.style.pointerEvents = '';
+      brotherBtn.textContent = 'Accept ' + currentBrotherName + ' as your brother';
+      brotherBtn.style.background = ''; brotherBtn.style.color = ''; brotherBtn.style.pointerEvents = '';
 
-      // Reset mission button
-      const missionBtn = document.getElementById('missionBtn');
-      missionBtn.textContent = "I'll be there";
-      missionBtn.classList.remove('btn-sage');
-      missionBtn.classList.add('btn-amber');
-      missionBtn.style.pointerEvents = '';
+      document.getElementById('eveningResponseArea').style.display = 'none';
+      document.getElementById('eveningInput').value = '';
 
-      // Clear answers
       Object.keys(answers).forEach(k => delete answers[k]);
     }
 
     // ===== NAVIGATION =====
-    function goTo(step) {
+    function goTo(stepId) {
       const current = document.querySelector('.step.active');
       if (current) current.classList.remove('active');
 
-      currentStep = step;
-
-      const stepMap = {
-        2: 'step-code',
-        3: 'step-onboarding',
-        4: 'step-ritual',
-        5: 'step-brother',
-        6: 'step-mission',
-        7: 'step-dashboard'
-      };
-
-      const nextEl = document.getElementById(stepMap[step]);
+      currentStepIndex = flowSteps.indexOf(stepId);
+      
+      const nextEl = document.getElementById(stepId);
+      if (!nextEl) return;
+      
       setTimeout(() => {
         nextEl.classList.add('active');
         nextEl.scrollTop = 0;
         updateProgress();
-        if (step === 4) setRitualMessage();
-        if (step === 7) setDashDate();
+        if (stepId === 'step-ritual') setRitualMessage();
+        if (stepId === 'step-bites') setBiteMessage();
+        if (stepId === 'step-dashboard') setDashData();
       }, 50);
     }
 
     function updateProgress() {
       const bar = document.getElementById('progressBar');
       const fill = document.getElementById('progressFill');
-      if (currentStep <= 1) {
+      if (currentStepIndex < 0 || flowSteps[currentStepIndex] === 'step-dashboard') {
         bar.classList.remove('visible');
       } else {
         bar.classList.add('visible');
-        const pct = ((currentStep - 2) / (totalSteps - 1)) * 100;
-        fill.style.width = pct + '%';
+        const pct = (currentStepIndex / (totalSteps - 2)) * 100;
+        fill.style.width = Math.min(pct, 100) + '%';
       }
     }
 
-    // ===== STEP 2 — ACCEPT CODE =====
+    // ===== STEP ACCEPT CODE =====
     function acceptCode() {
       const btn = document.getElementById('acceptCodeBtn');
       btn.textContent = 'The code is accepted.';
-      btn.style.background = 'var(--sage)';
-      btn.style.color = 'var(--parchment)';
-      btn.style.pointerEvents = 'none';
-      setTimeout(() => goTo(3), 800);
+      btn.style.background = 'var(--sage)'; btn.style.color = 'var(--parchment)'; btn.style.pointerEvents = 'none';
+      setTimeout(() => goTo('step-onboarding'), 800);
     }
 
-    // ===== STEP 3 — ONBOARDING =====
+    // ===== STEP ONBOARDING =====
     function selectAnswer(question, answerIndex, el) {
       answers['q' + question] = answerIndex;
-
       const parent = el.closest('.onboarding-question');
       parent.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
       el.classList.add('selected');
@@ -1904,81 +2082,152 @@
       setTimeout(() => {
         if (question < 3) {
           parent.classList.remove('active');
-          const nextQ = document.getElementById('q' + (question + 1));
-          nextQ.classList.add('active');
+          document.getElementById('q' + (question + 1)).classList.add('active');
           document.getElementById('onboardingProgress').textContent = (question + 1) + ' of 3';
         } else {
           parent.classList.remove('active');
           document.getElementById('onboardingProgress').style.display = 'none';
-          document.getElementById('onboardingLoading').classList.add('active');
-          setTimeout(() => goTo(4), 2200);
+          document.getElementById('onboardingLoading').style.display = 'flex';
+          runAiLoading();
         }
       }, 500);
     }
 
-    // ===== STEP 4 — RITUAL MESSAGE =====
-    const ritualMessages = [
-      "You've lost the structure that told you who you were. We start there. Tomorrow: get outside before you open anything with a screen. That's it.",
-      "The life you built around someone else needs rebuilding from the inside out. Start with your body. Movement before thought. Every morning.",
-      "Grief has no timeline. But the body still needs tending. One small physical thing per day. Not to feel better. To stay present.",
-      "No single event. That's often harder. We build forward from what still matters to you. Tomorrow we start with one thing you used to do that made you feel like yourself."
-    ];
-
-    function setRitualMessage() {
-      const q1 = answers.q1 !== undefined ? answers.q1 : 0;
-      document.getElementById('ritualAiMessage').textContent = ritualMessages[q1];
+    function runAiLoading() {
+      setTimeout(() => document.getElementById('aiLine1').classList.add('active'), 0);
+      setTimeout(() => document.getElementById('aiLine2').classList.add('active'), 800);
+      setTimeout(() => document.getElementById('aiLine3').classList.add('active'), 1600);
+      setTimeout(() => document.getElementById('aiLine4').classList.add('active'), 2400);
+      setTimeout(() => {
+        document.getElementById('onboardingLoading').style.display = 'none';
+        goTo('step-ritual');
+      }, 3400);
     }
 
-    // ===== STEP 5 — ACCEPT BROTHER =====
+    // ===== STEP RITUAL =====
+    const ritualMsgs = [
+      "You've lost the structure that told you who you were. Your ritual starts there. Before you open anything with a screen — move. Outside if you can. That's where we begin.",
+      "The life built around someone else needs rebuilding from the inside out. Your ritual starts with your body. Movement before thought. Every morning.",
+      "Grief has no timeline. But the body still needs tending. One small physical thing per day. Not to feel better. To stay present.",
+      "No single event. That's often harder. We build from what still matters. Tomorrow we start with one thing you used to do that made you feel like yourself."
+    ];
+    function setRitualMessage() {
+      document.getElementById('ritualAiMessage').textContent = ritualMsgs[answers.q1 || 0];
+    }
+
+    // ===== STEP BITES =====
+    const biteQuotes = [
+      { q: "The impediment to action advances action. What stands in the way becomes the way.", a: "Marcus Aurelius" },
+      { q: "You have power over your mind, not outside events. Realize this and you will find strength.", a: "Marcus Aurelius" },
+      { q: "It is not death that a man should fear, but he should fear never beginning to live.", a: "Marcus Aurelius" },
+      { q: "First say to yourself what you would be, then do what you have to do.", a: "Epictetus" }
+    ];
+    function setBiteMessage() {
+      const b = biteQuotes[answers.q1 || 0];
+      document.getElementById('biteQuote').textContent = `"${b.q}"`;
+      document.getElementById('biteAuthor').textContent = `— ${b.a}`;
+      document.getElementById('dashBiteQuote').textContent = `"${b.q}"`;
+    }
+
+    // ===== STEP BROTHER =====
     function acceptBrother() {
       const btn = document.getElementById('acceptBrotherBtn');
-      btn.textContent = 'James has been notified.';
-      btn.style.background = 'var(--sage)';
-      btn.style.color = 'var(--parchment)';
-      btn.style.pointerEvents = 'none';
-      setTimeout(() => goTo(6), 800);
+      btn.textContent = currentBrotherName + ' has been notified. You start tomorrow.';
+      btn.style.background = 'var(--sage)'; btn.style.color = 'var(--parchment)'; btn.style.pointerEvents = 'none';
+      setTimeout(() => goTo('step-mission-choice'), 1000);
     }
 
-    // ===== STEP 6 — JOIN MISSION =====
-    function joinMission() {
-      const btn = document.getElementById('missionBtn');
-      btn.textContent = "James knows you're coming. See you at 6.";
-      btn.classList.remove('btn-amber');
-      btn.classList.add('btn-sage');
-      btn.style.pointerEvents = 'none';
-      setTimeout(() => goTo(7), 1200);
+    // ===== STEP MISSION CHOICE =====
+    function selectMission(el) {
+      document.querySelectorAll('.mission-select-card').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+      const btn = document.getElementById('confirmMissionBtn');
+      btn.style.opacity = '1'; btn.style.visibility = 'visible';
     }
 
-    // ===== STEP 7 — DASHBOARD =====
-    function setDashDate() {
-      const now = new Date();
-      const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-      document.getElementById('dashDate').textContent = now.toLocaleDateString('en-US', opts);
-    }
-
-    function toggleCheck(el) {
-      el.classList.toggle('checked');
-    }
-
-    function showNoteInput() {
-      document.getElementById('noteArea').classList.toggle('visible');
-    }
-
-    function sendNote() {
-      const area = document.getElementById('noteArea');
-      const input = area.querySelector('.note-input');
-      if (input.value.trim()) {
-        input.value = '';
-        area.classList.remove('visible');
-        const btn = document.getElementById('noteBtn');
-        btn.textContent = 'Sent';
-        btn.style.background = 'var(--sage)';
-        setTimeout(() => {
-          btn.textContent = 'Send a note';
-          btn.style.background = '';
-        }, 2000);
+    // ===== STEP DASHBOARD =====
+    function setDashData() {
+      const hour = new Date().getHours();
+      let greet = 'Good evening.';
+      if (hour < 12) greet = 'Good morning.';
+      else if (hour < 18) greet = 'Good afternoon.';
+      document.querySelector('.dash-greeting').textContent = greet;
+      
+      document.getElementById('dashDate').textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      
+      const sel = document.querySelector('.mission-select-card.selected');
+      if (sel) {
+        document.getElementById('dashActiveMission').textContent = sel.children[1].textContent;
       }
     }
+    function toggleCheck(el) { el.classList.toggle('checked'); }
+
+    // ===== REMATCH BROTHER =====
+    function rematchBrother() {
+      currentBrotherName = "Daniel";
+      
+      document.getElementById('brName').textContent = "Daniel, 41";
+      document.getElementById('brLoc').textContent = "Austin, TX";
+      document.getElementById('brCtx').textContent = "Recently divorced after 12 years. Split custody. Trying to figure out how to be alone without being isolated.";
+      document.getElementById('brTags').innerHTML = '<span class="brother-tag">Weightlifting</span><span class="brother-tag">Stoic reader</span><span class="brother-tag">Woodworking</span><span class="brother-tag">Distance runner</span>';
+      document.getElementById('brRationale').textContent = "Matched on two critical pillars: rebuilding routine post-disruption, and a shared commitment to building physical resilience. Daniel is two years into his rebuild. He knows the traps.";
+      
+      document.getElementById('brRef1').textContent = "Daniel";
+      document.getElementById('brRef2').textContent = "Daniel";
+      document.getElementById('brRef3').textContent = "Daniel";
+      document.getElementById('brRef4').textContent = "Daniel";
+      
+      document.getElementById('acceptBrotherBtn').textContent = "Accept Daniel as your brother";
+      document.getElementById('dashNoteInput').placeholder = "Tell Daniel what you did";
+      
+      closeModal('rematchModal');
+    }
+
+    // ===== EVENING CHECKIN =====
+    function submitEvening() {
+      const evResponses = [
+        "That counts. Tomorrow you do it again.",
+        "Showing up is the work. You showed up.",
+        "Good. " + currentBrotherName + " reported in too.",
+        "One day at a time. That's the whole strategy."
+      ];
+      const inp = document.getElementById('eveningInput');
+      if (!inp.value.trim()) return;
+      const res = document.getElementById('eveningResponseArea');
+      res.style.display = 'block';
+      document.getElementById('eveningResponseText').textContent = evResponses[Math.floor(Math.random() * evResponses.length)];
+      setTimeout(() => goTo('step-dashboard'), 2000);
+    }
+    // ===== SCROLL UX =====
+    window.addEventListener('scroll', () => {
+      // Sticky Nav
+      const nav = document.getElementById('stickyNav');
+      if (window.scrollY > 500 && currentStepIndex === 0) {
+        nav.classList.add('visible');
+      } else {
+        nav.classList.remove('visible');
+      }
+
+      // Parallax Hero Image
+      const heroImg = document.querySelector('.hero-image-container img');
+      if (heroImg && window.scrollY < window.innerHeight) {
+        heroImg.style.transform = `translateY(${window.scrollY * 0.2}px) scale(1.05)`;
+      }
+    });
+
+    // ===== INTERSECTION OBSERVER =====
+    document.addEventListener('DOMContentLoaded', () => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+      document.querySelectorAll('.reveal-up').forEach(el => observer.observe(el));
+    });
   </script>
 </body>
 
